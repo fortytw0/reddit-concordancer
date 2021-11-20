@@ -60,38 +60,48 @@ for submission in subreddit_submissions:
         comments_forest = submission.comments
         for comment in comments_forest:
             
-                # comment.refresh()
+#             comment.refresh()
+            print("MAIN-COMMENT-->" , comment.body)
+            
+            comment_dict['comment_type'] = 'primary'
+            comment_dict['comment_body'] = comment.body
+            comment_dict['comment_author'] = comment.author.name
+            comment_dict['comment_created_utc'] = comment.created_utc
+            comment_dict['comment_id'] = comment.id
+            comment_dict['comment_score'] = comment.score
+            comment_dict['comment_submission_id'] = comment.submission.id
+            comment_dict['comment_submission_title'] = comment.submission.title
+            comment_dict['comment_subreddit'] = comment.submission.subreddit.name
 
-                comment_dict['comment_type'] = 'primary'
-                comment_dict['comment_body'] = comment.body
-                comment_dict['comment_author'] = comment.author.name
-                comment_dict['comment_created_utc'] = comment.created_utc
-                comment_dict['comment_id'] = comment.id
-                comment_dict['comment_score'] = comment.score
-                comment_dict['comment_submission_id'] = comment.submission.id
-                comment_dict['comment_submission_title'] = comment.submission.title
-                comment_dict['comment_subreddit'] = comment.submission.subreddit.name
+            comment_csv.append(comment_dict)
+            comment_dict = {}
+            print(comment_csv[-5:])
+            # print(comment_dict)
+
+            for reply in comment.replies : 
+
+                print("====REPLY-COMMENT-->" ,reply.body)
+
+                comment_dict['comment_type'] = 'secondary'
+                comment_dict['comment_body'] = reply.body
+                comment_dict['comment_author'] = reply.author.name
+                comment_dict['comment_created_utc'] = reply.created_utc
+                comment_dict['comment_id'] = reply.id
+                comment_dict['comment_score'] = reply.score
+                comment_dict['comment_submission_id'] = reply.submission.id
+                comment_dict['comment_submission_title'] = reply.submission.title
+                comment_dict['comment_subreddit'] = reply.submission.subreddit.name
 
                 comment_csv.append(comment_dict)
+                comment_dict = {}
+                print(comment_csv[-5:])
                 # print(comment_dict)
-                print('Parsing main comment...')
+#                     print('Parsing replies...')
 
-                for reply in comment.replies : 
+                
 
-                    
-                        comment_dict['comment_type'] = 'secondary'
-                        comment_dict['comment_body'] = reply.body
-                        comment_dict['comment_author'] = reply.author.name
-                        comment_dict['comment_created_utc'] = reply.created_utc
-                        comment_dict['comment_id'] = reply.id
-                        comment_dict['comment_score'] = reply.score
-                        comment_dict['comment_submission_id'] = reply.submission.id
-                        comment_dict['comment_submission_title'] = reply.submission.title
-                        comment_dict['comment_subreddit'] = reply.submission.subreddit.name
 
-                        comment_csv.append(comment_dict)
-                        # print(comment_dict)
-                        print('Parsing replies...')
+                
 
     except Exception as e : 
         print('Looks like there was an error with the comments : {}'.format(e))
@@ -108,6 +118,8 @@ for submission in subreddit_submissions:
         i += 1
     else : 
         i += 1
+        
+    break
 
 
 

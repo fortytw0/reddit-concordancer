@@ -12,7 +12,7 @@ with open('secrets.json', 'r') as f:
 client_id = secrets['client_id']
 client_password = secrets['client_secret']
 user_agent = secrets['user_agent']
-redirect_uri = secrets['user_agent']
+redirect_uri = secrets['redirect_uri']
 
 reddit = praw.Reddit(
     client_id=client_id,
@@ -22,7 +22,7 @@ reddit = praw.Reddit(
 
 url_request = reddit.auth.url(["identity", "read"], "...", "permanent", implicit=False)
 
-
+print(url_request)
 
 '''
 TODO: Automatically handle this part of the code to get the URL from the redirect URI
@@ -36,6 +36,7 @@ secrets['auth_code'] = parse_qs(urlparse(secrets['auth_url']).query)['code']
 secrets['refresh_token'] = reddit.auth.authorize(secrets['auth_code'])
 secrets['auth_me'] = reddit.user.me().name
 
+print(secrets)
 
 with open('secrets.json', 'w') as f : 
     json.dump(secrets, f)
